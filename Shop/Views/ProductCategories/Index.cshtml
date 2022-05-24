@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Shop.Models.ProductCategory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<p>
+    <a  asp-action="Create">Create New</a>
+</p>
+
+@foreach (var item in Model) {
+        <div >
+            <p>
+                @Html.DisplayFor(modelItem => item.Name)
+            </p>
+            <p>
+                @Html.DisplayFor(modelItem => item.Description)
+            </p>
+            
+                <img src="@("~/img/"+@item.ImageName)" asp-append-version="true" width="80px" height="60px" />
+           
+            <p>
+                <a asp-action="Edit" asp-route-id="@item.ProductCategoryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductCategoryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductCategoryId">Delete</a>
+            </p>
+        </div>
+}
+

@@ -1,0 +1,23 @@
+﻿@using Shop.ViewModels
+@model IEnumerable<PendingCartItem>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@foreach(var item in Model){
+    <p>@item.Product.ProductName</p>
+    <input type="number" min="1" value="@item.Amount" id="@item.Product.ProductId"/>
+    <a asp-action="RemoveItem" asp-route-item="@item.Amount" >Remove</a>
+}
+
+<h2>@ViewBag.TotalPrice</h2>
+
+@*<script>
+var value = 0;
+    function getValue(id){
+        value = document.getElementById(id).value;
+        console.log(result);
+    }
+</script>*@
