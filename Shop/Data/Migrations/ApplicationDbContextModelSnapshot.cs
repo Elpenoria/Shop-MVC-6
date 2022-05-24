@@ -163,6 +163,9 @@ namespace Shop.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -197,6 +200,10 @@ namespace Shop.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Qyteti")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -206,9 +213,6 @@ namespace Shop.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("isSeller")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -305,21 +309,6 @@ namespace Shop.Data.Migrations
                     b.HasKey("EventId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            CategoryId = 0,
-                            Description = "Lorem impsum Lorem impsum Lorem impsumLorem impsumLorem impsum Lorem impsumvLorem impsum Lorem impsumLorem impsum",
-                            Discount = 10,
-                            EndDate = new DateTime(2022, 5, 23, 22, 40, 32, 8, DateTimeKind.Local).AddTicks(1765),
-                            EventHeader = "Once a year, take your chance",
-                            EventName = "Electronics Discount",
-                            ImageUrl = "imageName.jpg",
-                            SellerId = "Test",
-                            StartDate = new DateTime(2022, 5, 23, 22, 40, 32, 8, DateTimeKind.Local).AddTicks(1730)
-                        });
                 });
 
             modelBuilder.Entity("Shop.Models.Order", b =>
@@ -408,32 +397,6 @@ namespace Shop.Data.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            CategoryId = 2,
-                            Description = "Taste the feeling or sth like that. ",
-                            DiscountedPrice = 5m,
-                            InStock = 1000,
-                            MainImage = "drinkBlue1.jpg",
-                            Price = 5m,
-                            ProductName = "drinkBlue",
-                            SellerId = "abcd"
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            CategoryId = 2,
-                            Description = "Tonic afert long night drinking ",
-                            DiscountedPrice = 3m,
-                            InStock = 300,
-                            MainImage = "drinkTonic1.jpg",
-                            Price = 3m,
-                            ProductName = "drinkTonic",
-                            SellerId = "abcd"
-                        });
                 });
 
             modelBuilder.Entity("Shop.Models.ProductCategory", b =>

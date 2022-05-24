@@ -12,8 +12,8 @@ using Shop.Data;
 namespace Shop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220521212052_migration7")]
-    partial class migration7
+    [Migration("20220524145247_add")]
+    partial class add
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,6 +165,9 @@ namespace Shop.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -199,6 +202,14 @@ namespace Shop.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Qyteti")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -208,9 +219,6 @@ namespace Shop.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("isSeller")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -307,21 +315,6 @@ namespace Shop.Data.Migrations
                     b.HasKey("EventId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            CategoryId = 0,
-                            Description = "Lorem impsum Lorem impsum Lorem impsumLorem impsumLorem impsum Lorem impsumvLorem impsum Lorem impsumLorem impsum",
-                            Discount = 10,
-                            EndDate = new DateTime(2022, 5, 21, 23, 20, 52, 430, DateTimeKind.Local).AddTicks(4753),
-                            EventHeader = "Once a year, take your chance",
-                            EventName = "Electronics Discount",
-                            ImageUrl = "imageName.jpg",
-                            SellerId = "Test",
-                            StartDate = new DateTime(2022, 5, 21, 23, 20, 52, 430, DateTimeKind.Local).AddTicks(4716)
-                        });
                 });
 
             modelBuilder.Entity("Shop.Models.Order", b =>
@@ -410,32 +403,6 @@ namespace Shop.Data.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            CategoryId = 2,
-                            Description = "Taste the feeling or sth like that. ",
-                            DiscountedPrice = 5m,
-                            InStock = 1000,
-                            MainImage = "drinkBlue1.jpg",
-                            Price = 5m,
-                            ProductName = "drinkBlue",
-                            SellerId = "abcd"
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            CategoryId = 2,
-                            Description = "Tonic afert long night drinking ",
-                            DiscountedPrice = 3m,
-                            InStock = 300,
-                            MainImage = "drinkTonic1.jpg",
-                            Price = 3m,
-                            ProductName = "drinkTonic",
-                            SellerId = "abcd"
-                        });
                 });
 
             modelBuilder.Entity("Shop.Models.ProductCategory", b =>
@@ -447,6 +414,9 @@ namespace Shop.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductCategoryId"), 1L, 1);
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -457,26 +427,6 @@ namespace Shop.Data.Migrations
                     b.HasKey("ProductCategoryId");
 
                     b.ToTable("ProductCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductCategoryId = 1,
-                            Description = "All tech products that you can find, from home electronics to personal gadgets.",
-                            Name = "Electronics"
-                        },
-                        new
-                        {
-                            ProductCategoryId = 2,
-                            Description = "Find your prefered endergy drinks here. From energy drings to pops",
-                            Name = "Drinks"
-                        },
-                        new
-                        {
-                            ProductCategoryId = 3,
-                            Description = "Lastes models of clothing. See and dont miss lastes mode",
-                            Name = "Clothes"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

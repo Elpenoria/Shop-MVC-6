@@ -27,9 +27,18 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+          
             <div class="form-control">
-                <input type="checkbox" asp-for="Input.isSeller"   />
-                <label asp-for="Input.isSeller"></label>
+
+                <input asp-for="Input.BirthDate"   /> 
+                <label asp-for="Input.BirthDate"></label>
+                
+            </div> 
+            <div class="form-control">
+
+                <input asp-for="Input.Qyteti"   /> 
+                <label asp-for="Input.Qyteti"></label>
+               
                 
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\.NetProjectCore\\Shop\\Shop\\Shop\\Shop.csproj": {}
+    "C:\\Users\\Perdorues\\source\\repos\\Projekti-Core\\Shop\\Shop.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\.NetProjectCore\\Shop\\Shop\\Shop\\Shop.csproj": {
+    "C:\\Users\\Perdorues\\source\\repos\\Projekti-Core\\Shop\\Shop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\.NetProjectCore\\Shop\\Shop\\Shop\\Shop.csproj",
+        "projectUniqueName": "C:\\Users\\Perdorues\\source\\repos\\Projekti-Core\\Shop\\Shop.csproj",
         "projectName": "Shop",
-        "projectPath": "C:\\Users\\User\\Desktop\\.NetProjectCore\\Shop\\Shop\\Shop\\Shop.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\.NetProjectCore\\Shop\\Shop\\Shop\\obj\\",
+        "projectPath": "C:\\Users\\Perdorues\\source\\repos\\Projekti-Core\\Shop\\Shop.csproj",
+        "packagesPath": "C:\\Users\\Perdorues\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Perdorues\\source\\repos\\Projekti-Core\\Shop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Perdorues\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

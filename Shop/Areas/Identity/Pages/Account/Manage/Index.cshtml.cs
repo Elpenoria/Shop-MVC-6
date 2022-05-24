@@ -59,8 +59,19 @@ namespace Shop.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
-            [Display(Name = "Wanna be a Seller? ")]
-            public bool isSeller { get; set; }
+            
+            [Required]
+            [Display(Name = "Birth Date")]
+            [DataType(DataType.Date)]
+
+            public DateTime BirthDate { get; set; }
+
+            [Required]
+            [Display(Name ="City")]
+
+            public string Qyteti { get; set; }
+
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -73,7 +84,8 @@ namespace Shop.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                isSeller = user.isSeller
+                BirthDate = user.BirthDate,
+                Qyteti = user.Qyteti
             };
         }
 
@@ -114,10 +126,19 @@ namespace Shop.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Input.isSeller != user.isSeller)
+            
+
+            if(Input.BirthDate != user.BirthDate)
             {
-                user.isSeller = Input.isSeller;
+                user.BirthDate = Input.BirthDate;
             }
+
+            if (Input.Qyteti != user.Qyteti)
+            {
+                user.Qyteti = Input.Qyteti;
+            }
+
+
 
             await _userManager.UpdateAsync(user);
 

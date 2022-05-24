@@ -102,8 +102,18 @@ namespace Shop.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Display(Name ="Wanna be a seller?")]
-            public bool isSeller { get; set; }
+            
+            [Required]
+            [Display(Name = "BirthDate")]
+            [DataType(DataType.Date)]
+
+            public DateTime BirthDate { get; set; }
+
+            [Required]
+            [Display(Name = "City")]
+
+            public string Qyteti { get; set; }
+
         }
 
 
@@ -120,12 +130,13 @@ namespace Shop.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                user.isSeller = Input.isSeller;
+                user.BirthDate = Input.BirthDate;
+                user.Qyteti = Input.Qyteti;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-                if(user.isSeller == true)
+                /*if(user.isSeller == true)
                 {
                     bool x = await _roleManager.RoleExistsAsync("Seller");
                     if (!x)
@@ -144,7 +155,7 @@ namespace Shop.Areas.Identity.Pages.Account
 
                     }
                     var result1 = await _userManager.AddToRoleAsync(user, "User");
-                }
+                }*/
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

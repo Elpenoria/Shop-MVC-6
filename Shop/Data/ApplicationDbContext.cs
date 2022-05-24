@@ -18,7 +18,7 @@ namespace Shop.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<ConfirmationData> ConfirmationDatas { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+       /* protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
@@ -83,7 +83,7 @@ namespace Shop.Data
                     CategoryId = 2,
                     SellerId = "abcd"
                 });
-        }
+        }*/
 
         public DbSet<Shop.Models.ConfirmationData>? ConfirmationData { get; set; }
     }

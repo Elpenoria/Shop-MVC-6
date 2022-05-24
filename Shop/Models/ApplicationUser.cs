@@ -4,6 +4,9 @@ namespace Shop.Models
 {
     public class ApplicationUser :IdentityUser
     {
-        public bool isSeller { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string Qyteti { get; set; }
+        
+
     }
 }
