@@ -4,76 +4,118 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="w-75 mx-auto row">
+    <div class="col-3">
+        <div class="d-flex flex-column align-items-center p-2 bg-dark h-auto">
+            <a onclick="func1()" class="mb-2">
+                <img src="@("~/img/"+Model.MainImage)" asp-append-version="true" width="100%" height="auto" id="imageA1" />
+            </a>
+            <a onclick="func2()" class="mb-2">
+                <img src="@("~/img/"+Model.SecondImage)" asp-append-version="true" width="100%" height="auto" id="imageA2" />
+            </a>
+            <a onclick="func3()">
+                <img src="@("~/img/"+Model.ThirdImage)" asp-append-version="true" width="100%" height="auto" id="imageA3" />
+            </a>
+        </div>
+    </div>
+    <div class="col-9 p-4">
+        <div id="imgDiv">
+            <img class="mx-auto" src="@("~/img/"+Model.MainImage)" asp-append-version="true" width="80%" height="auto" id="imageB1" />
+            <img class="mx-auto" src="@("~/img/"+Model.SecondImage)" asp-append-version="true" width="80%" height="auto" id="imageB2" style="display:none" />
+            <img class="mx-auto" src="@("~/img/"+Model.ThirdImage)" asp-append-version="true" width="80%" height="auto" id='imageB3' style="display:none" />
+        </div>
+        <div id="details" class="mt-2 fw-bold">
+            <h2>@Model.ProductName</h2>
+            <p>@Model.Description</p>
+            <div class="d-flex p-2 justify-content-between">
+                @if (Model.Price != Model.DiscountedPrice)
+                {
+                    <div class="d-flex flex-column">
+                        <p><span class="d-4 mr-2">Special Price  </span><span class="text-warning d-4">@Model.DiscountedPrice$  </span> <s>@Model.Price$</s></p>
+                        <p><input type="number" class="form-control" id="amount" min="1" width:40px value="1"> Choose Your Amount </p>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-warning my-auto" onclick="Create('@Url.Action("Buy","Products")')">Add to cart</button>
+                        <button class="btn btn-outline-dark my-auto" asp-action="Index">Return to List</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex flex-column">
+                        <p class="d-4">Price  @Model.Price$</p>
+                        <p><input type="number" class="form-control" id="amount" min="1" width:40px value="1"> Choose Your Amount </p>
+                    </div>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MainImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MainImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SecondImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SecondImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThirdImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThirdImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiscountedPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiscountedPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InStock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InStock)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SellerId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SellerId)
-        </dd>
-    </dl>
+                    <div class="d-flex">
+                        @*<a class="btn btn-outline-warning m-2" asp-action="Buy" asp-route-id="@Model?.ProductId">Add to cart</a>*@
+                        <button type="button" class="btn btn-outline-warning my-auto" onclick="Create('@Url.Action("Buy","Products")')">Add to cart</button>
+                        <button class="btn btn-outline-dark my-auto" asp-action="Index">Return to List</button>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a> |
     <a asp-action="Buy" asp-route-id="@Model?.ProductId">Add to cart</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+    function func1() {
+        console.log("behet");
+        document.getElementById("imageB1").style.display = "block";
+        document.getElementById("imageB2").style.display = "none";
+        document.getElementById("imageB3").style.display = "none";
+    }
+    function func2() {
+        console.log("behet");
+        document.getElementById("imageB1").style.display = "none";
+        document.getElementById("imageB2").style.display = "block";
+        document.getElementById("imageB3").style.display = "none";
+    }
+    function func3() {
+        console.log("behet");
+        document.getElementById("imageB1").style.display = "none";
+        document.getElementById("imageB2").style.display = "none";
+        document.getElementById("imageB3").style.display = "block";
+    }
+
+    function Create(url) {
+        var amount = $("#amount").val();
+        console.log("therret");
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { amount: amount, id : @Model.ProductId},
+            success: {
+            }
+        })
+    }
+
+    //function Create(url )
+    //{
+    //    var amount = $("#amount").val();
+    //    $.ajax({
+    //        type:"POST",
+    //        url: url,
+    //         data:{amount:name ,id:@Model.ProductId},
+    //         success:function(response)
+    //         {
+    //             location.reload();
+    //         }
+    //    })
+    //}
+</script>

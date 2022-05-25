@@ -26,9 +26,13 @@ namespace Shop.Controllers
             HttpContext.Session.SetInt32("CartItems", itemsInCart);
             ViewData["CartCount"] = HttpContext.Session.GetInt32("CartItems");
 
-            return View();
+            return RedirectToAction("Index" , "Products");
         }
        
+        public IActionResult Error404()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

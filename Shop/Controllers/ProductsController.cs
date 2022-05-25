@@ -50,11 +50,13 @@ namespace Shop.Controllers
             return View(pendingCartItems);
         }
 
-        public IActionResult Buy(int id)
+        
+        public IActionResult Buy(int amount , int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var useruserId = _userManager.GetUserAsync(User).Id;
-            var currentCart = new List<PendingCart>(); 
+            //var useruserId = _userManager.GetUserAsync(User).Id;
+            var currentCart = new List<PendingCart>();
+            
             try
             {
                 var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
@@ -62,20 +64,44 @@ namespace Shop.Controllers
             }
             catch
             {
-                var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-                currentCart = currentPendingCart;
+                try
+                {
+                    var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+                    currentCart = currentPendingCart;
+                }
+                catch
+                {
+                    try
+                    {
+                        var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+                        currentCart = currentPendingCart;
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+                            currentCart = currentPendingCart;
+                        }
+                        catch
+                        {
+                            var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+                            currentCart = currentPendingCart;
+                        }
+                    }
+                }
             }
             if (currentCart.Any(x => x.ProductId == id))
             {
                 var row = currentCart.FirstOrDefault(x => x.ProductId == id);
-                row.Amount += 1;
+                row.Amount += amount;
             }
             else
             {
                 var pendingCart = new PendingCart();
                 pendingCart = new PendingCart
                 {
-                    Amount = 1,
+                    Amount = amount,
                     ProductId = id,
                     UserId = userId
                 };
@@ -85,7 +111,7 @@ namespace Shop.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("YourCart");
+            return RedirectToAction("Index");
         }
 
         public decimal GetTotalPrice(List<PendingCartItem> items)
@@ -102,47 +128,70 @@ namespace Shop.Controllers
             return totalPrice;
         }
 
-        public IActionResult Order()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+        //public IActionResult Order()
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var userCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
 
-            List<int> productIds = new List<int>();
-            List<int> productAmounts = new List<int>();
+        //    List<int> productIds = new List<int>();
+        //    List<int> productAmounts = new List<int>();
 
-            foreach (var item in userCart)
-            {
-                productIds.Add(item.ProductId);
-                productAmounts.Add(item.Amount);
+        //    foreach (var item in userCart)
+        //    {
+        //        productIds.Add(item.ProductId);
+        //        productAmounts.Add(item.Amount);
 
-            }
-            //var order = new Order
-            //{
-            //    CustomerId = userId,
-            //    OrderItem = productIds,
-            //    OrderAmount = productAmounts
-            //};
+        //    }
+        //    //var order = new Order
+        //    //{
+        //    //    CustomerId = userId,
+        //    //    OrderItem = productIds,
+        //    //    OrderAmount = productAmounts
+        //    //};
 
-            //_context.Orders.Add(order);
-            //_context.SaveChanges();
+        //    //_context.Orders.Add(order);
+        //    //_context.SaveChanges();
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
 
-        
+
         //public IActionResult EditProduct(int amount , int prodId)
         //{
         //    return View();
         //}
-
+        
         public IActionResult RemoveItem(int item)
         {
-            return View();
+            var product = _context.Products.FirstOrDefault(x => x.ProductId == item);
+            return View(product);
+        }
+        
+        public async Task<IActionResult> Remove(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var product = await _context.PendingCartItems.FirstOrDefaultAsync(x => x.UserId == userId && x.ProductId == id); ;
+            _context.PendingCartItems.Remove(product);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("YourCart");
         }
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            
+            var events = await _context.Events.ToListAsync();
+
+            foreach(var ev in events){
+                var tempProducts = await _context.Products.Where(x => x.CategoryId == ev.CategoryId && x.SellerId == ev.SellerId).ToListAsync();
+                
+                foreach(var prod in tempProducts)
+                {
+                    prod.DiscountedPrice = prod.Price - (prod.Price * ev.Discount) / 100;
+                    _context.Update(prod);
+                }
+                
+            }
+            await _context.SaveChangesAsync();
+
             var products = await _context.Products.ToListAsync();
             //return _context.Movie != null ? 
             //            View(await _context.Movie.ToListAsync()) :

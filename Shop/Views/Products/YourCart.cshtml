@@ -9,11 +9,12 @@
 @foreach(var item in Model){
     <p>@item.Product.ProductName</p>
     <input type="number" min="1" value="@item.Amount" id="@item.Product.ProductId"/>
-    <a asp-action="RemoveItem" asp-route-item="@item.Amount" >Remove</a>
+    <a asp-action="RemoveItem" asp-route-item="@item.Product.ProductId" >Remove</a>
 }
 
 <h2>@ViewBag.TotalPrice</h2>
 
+<a asp-action="Create" asp-controller="ConfirmationDatas">Buy all</a>
 @*<script>
 var value = 0;
     function getValue(id){

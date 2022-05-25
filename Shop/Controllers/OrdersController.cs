@@ -43,7 +43,11 @@ namespace Shop.Controllers
             };
 
             _context.Orders.Add(order);
-            _context.SaveChangesAsync();
+            foreach(var cart in userCart)
+            {
+                _context.PendingCartItems.Remove(cart);
+            }
+            _context.SaveChanges();
 
 
             return RedirectToAction("OkReturn");

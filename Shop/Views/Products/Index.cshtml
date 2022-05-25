@@ -4,12 +4,51 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<div class="row">
+    <div class="col-12 col-md-3 bg-success">
+    </div>
+    <div class="col-12 col-md-9">
+        <div class="d-flex flex-wrap">
+            @foreach (var item in Model)
+            {
+                if (@item.Price == @item.DiscountedPrice)
+                {
+                    <div class=" mx-auto p-2 fw-bold  bg-dark rounded mb-2" style="width:300px; min-width:280px; max-width:320px">
+                        <a asp-action="Details" asp-route-id="@item.ProductId">
+                            <img src="@("~/img/"+item.MainImage)" asp-append-version="true" width="100%" height="auto" />
+                        </a>
+                        <div class="d-flex flex-column justify-content-start">
+                            <span class=" text-white">@item.ProductName</span>
+                            <div class="d-flex flex-row-reverse p-2">
+                                <span class="fs-4 text-white">@item.Price$</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class=" border border-5 border-warning bg-dark rounded p-2 mx-auto fw-bold mb-2" style="width:300px; min-width:280px; max-width:320px">
+                        <a asp-action="Details" asp-route-id="@item.ProductId">
+                            <img src="@("~/img/"+item.MainImage)" asp-append-version="true" width="100%" height="auto" />
+                        </a>
+                        <div class="d-flex flex-column justify-content-start">
+                            <span class="text-white ">@item.ProductName</span>
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <p class="text-warning fs-4 mb-0">@item.DiscountedPrice$</p> 
+                                <p class=" text-white mb-0"><s>@item.Price $ </s></p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -87,4 +126,4 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@

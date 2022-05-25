@@ -3,26 +3,44 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+
+
+</style>
 <p>
-    <a  asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 
-@foreach (var item in Model) {
-        <div >
-            <p>
-                @Html.DisplayFor(modelItem => item.Name)
-            </p>
-            <p>
-                @Html.DisplayFor(modelItem => item.Description)
-            </p>
+<div class="row mb-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center align-items-center p-2 " style="position:relative ;">
+
+            <a asp-action="Details" asp-route-id="@item.ProductCategoryId">
+                <img src="@("~/img/"+@item.ImageName)" asp-append-version="true" style="width:100%; height:100%"/>
+            </a>
+            <h1 class="position-absolute top-50 start-50 translate-middle fw-bold text-white text-center" >@item.Name</h1>
             
-                <img src="@("~/img/"+@item.ImageName)" asp-append-version="true" width="80px" height="60px" />
-           
-            <p>
-                <a asp-action="Edit" asp-route-id="@item.ProductCategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductCategoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductCategoryId">Delete</a>
-            </p>
         </div>
-}
+    }
+</div>
+@*@foreach (var item in Model)
+{
+    <div>
+        <p>
+            @Html.DisplayFor(modelItem => item.Name)
+        </p>
+        <p>
+            @Html.DisplayFor(modelItem => item.Description)
+        </p>
+
+        <img src="@("~/img/"+@item.ImageName)" asp-append-version="true" width="80px" height="60px" />
+
+        <p>
+            <a asp-action="Edit" asp-route-id="@item.ProductCategoryId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.ProductCategoryId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.ProductCategoryId">Delete</a>
+        </p>
+    </div>
+}*@
 

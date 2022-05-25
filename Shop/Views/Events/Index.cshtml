@@ -4,11 +4,32 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div class="row mb-4 " >
+    @foreach (var item in Model)
+    {
+        <div class="col-12  d-flex justify-content-center align-items-center px-0 mx-auto mt-3" style="position:relative ; max-width:1000px;">
+
+            <a asp-action="Details" asp-route-id="@item.EventId">
+                <img src="@("~/img/"+@item.ImageUrl)" asp-append-version="true" style="width:100%; height:auto"/>
+            </a>
+            <h1 class="position-absolute top-50 start-50 translate-middle fw-bold text-white text-center" style="font-size:48px">@item.EventName</h1>
+            <div class="position-absolute top-0 end-0 bg-dark rounded text-warning py-3 px-4 fw-bold fs-4" style="width:300px">@item.Discount % Discount</div>
+            
+        </div>
+        <div class="bg-dark text-white col-12  p-3 mx-auto mb-4" style="max-width:1000px;">
+            <h2>@item.EventHeader with <b class="text-warning">@item.Discount %  discount </b></h2>
+            <p>@item.Description</p>
+            <p>@item.Description</p>
+            <a class="btn btn-outline-warning" asp-action="Details" asp-route-id="@item.EventId">Go to special products <i class="fa-solid fa-angles-right"></i></a>
+        </div>
+    }
+</div>
+
 <table class="table">
     <thead>
         <tr>

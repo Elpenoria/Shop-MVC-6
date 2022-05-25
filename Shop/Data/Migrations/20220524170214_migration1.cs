@@ -41,13 +41,6 @@ namespace Shop.Data.Migrations
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "isSeller",
-                table: "AspNetUsers",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
                 table: "AspNetUserLogins",
@@ -172,21 +165,6 @@ namespace Shop.Data.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.ProductId);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "EventId", "CategoryId", "Description", "Discount", "EndDate", "EventHeader", "EventName", "ImageUrl", "SellerId", "StartDate" },
-                values: new object[] { 1, 0, "Lorem impsum Lorem impsum Lorem impsumLorem impsumLorem impsum Lorem impsumvLorem impsum Lorem impsumLorem impsum", 10, new DateTime(2022, 5, 24, 11, 24, 21, 636, DateTimeKind.Local).AddTicks(2107), "Once a year, take your chance", "Electronics Discount", "imageName.jpg", "Test", new DateTime(2022, 5, 24, 11, 24, 21, 636, DateTimeKind.Local).AddTicks(2066) });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "ProductId", "CategoryId", "Description", "DiscountedPrice", "EventId", "InStock", "MainImage", "Price", "ProductName", "SecondImage", "SellerId", "ThirdImage" },
-                values: new object[] { 1, 2, "Taste the feeling or sth like that. ", 5m, null, 1000, "drinkBlue1.jpg", 5m, "drinkBlue", null, "abcd", null });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "ProductId", "CategoryId", "Description", "DiscountedPrice", "EventId", "InStock", "MainImage", "Price", "ProductName", "SecondImage", "SellerId", "ThirdImage" },
-                values: new object[] { 2, 2, "Tonic afert long night drinking ", 3m, null, 300, "drinkTonic1.jpg", 3m, "drinkTonic", null, "abcd", null });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -215,10 +193,6 @@ namespace Shop.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Qyteti",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "isSeller",
                 table: "AspNetUsers");
 
             migrationBuilder.AlterColumn<string>(

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-
+using Shop.Validatore;
 namespace Shop.Models
 {
     public class Event
@@ -12,6 +12,7 @@ namespace Shop.Models
         public string ImageUrl { get; set; }
         [NotMapped]
         public IFormFile ImageUrlFile { get; set; }
+        [GreaterDate]
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string SellerId { get; set; }

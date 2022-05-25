@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title> 404 NOT FOUND </title>
+        <link rel="icon" href="LOGO.png" type="image/png" sizes="16x16" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <style type="text/css">
+           img{
+               width:150px;
+               height:150px;
+
+           }    
+
+           .jumptron{
+               margin-top:100px;
+           }
+        </style>
+
+
+    </head>
+
+    <body>
+        <div class="container">
+           <div class="jumbotron text-center">
+               <img src="img/404.jpg" style="filter:blur(0) !" />
+               <h2> 404 NOT FOUND!</h2>
+               <p> This page isn't available. Sorry about that.<br /> Try searching for something else.</p>
+               <a asp-action="Index" asp-controller="Home" class="btn btn-primary btn-lg">
+                   <span class="glyphicon"> </span>
+                   Home
+               </a>
+           </div>
+        </div>
+
+    </body>
+</html>

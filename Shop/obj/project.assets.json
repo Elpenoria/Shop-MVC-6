@@ -10435,19 +10435,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Perdorues\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Perdorues\\Source\\Repos\\Projekti-Core\\Shop\\Shop.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\ProjektiJoel\\Shop-MVC-6\\Shop\\Shop.csproj",
       "projectName": "Shop",
-      "projectPath": "C:\\Users\\Perdorues\\Source\\Repos\\Projekti-Core\\Shop\\Shop.csproj",
-      "packagesPath": "C:\\Users\\Perdorues\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Perdorues\\Source\\Repos\\Projekti-Core\\Shop\\obj\\",
+      "projectPath": "C:\\Users\\User\\Desktop\\ProjektiJoel\\Shop-MVC-6\\Shop\\Shop.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\ProjektiJoel\\Shop-MVC-6\\Shop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Perdorues\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -10546,7 +10546,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }
