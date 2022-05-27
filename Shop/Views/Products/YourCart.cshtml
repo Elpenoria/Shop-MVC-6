@@ -5,20 +5,55 @@
 *@
 @{
 }
+@if (!String.IsNullOrEmpty(ViewBag.suggestion))
+{
+    <h2 class=" w-75 mx-auto">U may also like</h2>
+    <div style="height:200px;"  class="d-flex w-75 mx-auto mb-3 justify-content-start">
+        @foreach (var item in ViewBag.suggestetProd)
+        {
+            <div  style="position:relative ; height:100%;" class="mr-2">
 
-@foreach(var item in Model){
-    <p>@item.Product.ProductName</p>
-    <input type="number" min="1" value="@item.Amount" id="@item.Product.ProductId"/>
-    <a asp-action="RemoveItem" asp-route-item="@item.Product.ProductId" >Remove</a>
+
+                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.ProductId">
+                    <img src="@("~/img/"+@item.MainImage)" asp-append-version="true" style="width:100%; height:100%" />
+                </a>
+                <h1 class="position-absolute top-50 start-50 translate-middle fw-bold text-white text-center">@item.ProductName</h1>
+
+            </div>
+        }
+    </div>
+    @*
+    <h1>@ViewBag.suggestion</h1>*@
 }
+<div class="row border border-3 border-warning w-50 mx-auto shadow p-3 rounded">
+    @if (Model.Any())
+    {
+        @foreach (var item in Model)
+        {
+            <div class="position-relative d-flex align-items-center justify-content-between w-100 mb-2 p-1 shadow-sm rounded border">
+                <div class="w-25">
+                    <img src="@("~/img/"+item.Product.MainImage)" asp-append-version="true" width="100px height="auto" class="mx-auto" />
+                </div>
+                <div class=" w-25 fw-bold">@item.Product.ProductName</div>
+                <div style="width:40%"> @item.Amount X @item.Product.DiscountedPrice $ = @(item.Amount * item.Product.DiscountedPrice)$</div>
+                <a class="btn btn-outline-danger  rounded-circle position-absolute top-0 end-0 " asp-action="RemoveItem" asp-route-item="@item.Product.ProductId"><i class="fas fa-times"></i> </a>
 
-<h2>@ViewBag.TotalPrice</h2>
+            </div>
 
-<a asp-action="Create" asp-controller="ConfirmationDatas">Buy all</a>
-@*<script>
-var value = 0;
-    function getValue(id){
-        value = document.getElementById(id).value;
-        console.log(result);
+
+
+        }
+        <div class="d-flex justify-content-between p-2">
+            <div class="w-25">
+                <a asp-action="Create" asp-controller="ConfirmationDatas" class="mx-auto btn btn-outline-warning">Buy all</a>
+            </div>
+            <div style="width:40%">Your Total : @ViewBag.TotalPrice $</div>
+        </div>
     }
-</script>*@
+    else
+    {
+        <h2>Your Cart is empty</h2>
+        <p>Buy some <a asp-action="Index">products</a></p>
+    }
+
+</div>

@@ -13,10 +13,9 @@
         <p>@Model.Description</p>
         <p>@Model.DiscountedPrice</p>
         <div class="d-flex">
-            <a class="btn btn-danger" asp-action="Remove" asp-route-id="@Model.ProductId">Remove</a>
-            <a asp-action="YourCart">Return to Cart</a>
+            <a class="btn btn-danger" asp-action="Remove" asp-route-id="@Model.ProductId">Sure To Remove?</a>
+            <a asp-action="YourCart" class="btn btn-info">Return to Cart</a>
         </div>
     </div>
 </div>
-<h1>Are you sure to remove this item ?</h1>
-<
+

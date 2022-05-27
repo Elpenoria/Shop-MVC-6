@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using Shop.Models;
 
 namespace Shop.Controllers
 {
+    
     public class ConfirmationDatasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,6 +26,7 @@ namespace Shop.Controllers
         }
 
         // GET: ConfirmationDatas
+        
         public async Task<IActionResult> Index()
         {
             //return _context.Movie != null ? 
@@ -50,6 +53,7 @@ namespace Shop.Controllers
             return View(confirmationData);
         }
 
+        [Authorize(Roles = "User")]
         // GET: ConfirmationDatas/Create
         public IActionResult Create()
         {
@@ -61,6 +65,7 @@ namespace Shop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Create(ConfirmationData confirmationData)
         {
             
@@ -68,12 +73,9 @@ namespace Shop.Controllers
             DateTime now = DateTime.Now;
             confirmationData.CreatedDate = now;
             confirmationData.Email = _userManager.GetUserName(User);
-            if (ModelState.IsValid)
-            {
-                _context.Add(confirmationData);
-                await _context.SaveChangesAsync();
+            _context.Add(confirmationData);
+            await _context.SaveChangesAsync();
                 
-            }
             return RedirectToAction("CreateOrder", "Orders");
         }
 

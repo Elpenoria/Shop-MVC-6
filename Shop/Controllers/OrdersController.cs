@@ -50,7 +50,7 @@ namespace Shop.Controllers
             _context.SaveChanges();
 
 
-            return RedirectToAction("OkReturn");
+            return RedirectToAction("Index" , "Products");
         }
 
         public async Task<IActionResult> RemoveOrders()

@@ -7,6 +7,7 @@ namespace Shop.Models
     {
         public int ProductId { get; set; }
         [Display(Name = "Product Name")]
+
         public string ProductName { get; set; }
         [Display( Name = "Product Description")]
         public string Description { get; set; }

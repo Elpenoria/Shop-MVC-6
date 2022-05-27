@@ -11,9 +11,11 @@ using Shop.Data;
 using Shop.Models;
 using Shop.ViewModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shop.Controllers
 {
+    [Authorize(Roles = "Seller , Admin ,User")]
     public class ProductsController : Controller
     {
         private readonly IWebHostEnvironment _hostEnvironment;
@@ -26,12 +28,16 @@ namespace Shop.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        
 
+        [Authorize(Roles = "User ,Admin")]
         public IActionResult YourCart()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userCart =  _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+            var userCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+            
+            
+            HttpContext.Session.SetInt32("CartItems", userCart.Count());
+            
 
             var pendingCartItems = new List<PendingCartItem>();
             foreach (var item in userCart)
@@ -47,50 +53,28 @@ namespace Shop.Controllers
             }
             ViewData["TotalPrice"] = GetTotalPrice(pendingCartItems);
 
+            if (!String.IsNullOrEmpty(Request.Cookies["Suggestion"]))
+            {
+                ViewData["suggestion"] = Request.Cookies["Suggestion"];
+            }
+
+            var category = _context.ProductCategories.FirstOrDefault(x=>x.Name == ViewData["suggestion"]);
+            var categId = category.ProductCategoryId;
+            ViewData["suggestetProd"] = _context.Products.Where(x=>x.CategoryId == categId);
+            
             return View(pendingCartItems);
         }
 
-        
-        public IActionResult Buy(int amount , int id)
+        [Authorize(Roles = "User , Admin")]
+        public IActionResult Buy(int amount, int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var useruserId = _userManager.GetUserAsync(User).Id;
             var currentCart = new List<PendingCart>();
-            
-            try
-            {
-                var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-                currentCart = currentPendingCart;
-            }
-            catch
-            {
-                try
-                {
-                    var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-                    currentCart = currentPendingCart;
-                }
-                catch
-                {
-                    try
-                    {
-                        var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-                        currentCart = currentPendingCart;
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-                            currentCart = currentPendingCart;
-                        }
-                        catch
-                        {
-                            var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-                            currentCart = currentPendingCart;
-                        }
-                    }
-                }
-            }
+
+            var currentPendingCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+            currentCart = currentPendingCart;
+
             if (currentCart.Any(x => x.ProductId == id))
             {
                 var row = currentCart.FirstOrDefault(x => x.ProductId == id);
@@ -114,6 +98,7 @@ namespace Shop.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "User , Admin")]
         public decimal GetTotalPrice(List<PendingCartItem> items)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -128,45 +113,16 @@ namespace Shop.Controllers
             return totalPrice;
         }
 
-        //public IActionResult Order()
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var userCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
-
-        //    List<int> productIds = new List<int>();
-        //    List<int> productAmounts = new List<int>();
-
-        //    foreach (var item in userCart)
-        //    {
-        //        productIds.Add(item.ProductId);
-        //        productAmounts.Add(item.Amount);
-
-        //    }
-        //    //var order = new Order
-        //    //{
-        //    //    CustomerId = userId,
-        //    //    OrderItem = productIds,
-        //    //    OrderAmount = productAmounts
-        //    //};
-
-        //    //_context.Orders.Add(order);
-        //    //_context.SaveChanges();
-
-        //    return RedirectToAction("Index");
-        //}
-
-
-        //public IActionResult EditProduct(int amount , int prodId)
-        //{
-        //    return View();
-        //}
         
+
+        [Authorize(Roles = "User , Admin")]
         public IActionResult RemoveItem(int item)
         {
             var product = _context.Products.FirstOrDefault(x => x.ProductId == item);
             return View(product);
         }
-        
+
+        [Authorize(Roles = "User , Admin")]
         public async Task<IActionResult> Remove(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -176,27 +132,98 @@ namespace Shop.Controllers
             return RedirectToAction("YourCart");
         }
         // GET: Products
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "Seller , Admin , User")]
+        public async Task<IActionResult> Index(string? name, string? categoryName)
         {
             var events = await _context.Events.ToListAsync();
 
-            foreach(var ev in events){
+            foreach (var ev in events)
+            {
                 var tempProducts = await _context.Products.Where(x => x.CategoryId == ev.CategoryId && x.SellerId == ev.SellerId).ToListAsync();
-                
-                foreach(var prod in tempProducts)
+
+                foreach (var prod in tempProducts)
                 {
                     prod.DiscountedPrice = prod.Price - (prod.Price * ev.Discount) / 100;
                     _context.Update(prod);
                 }
-                
+
             }
             await _context.SaveChangesAsync();
 
-            var products = await _context.Products.ToListAsync();
+            var categoryNames = new List<string>();
+            var categories = await _context.ProductCategories.ToListAsync();
+            foreach (var cat in categories)
+            {
+                categoryNames.Add(cat.Name);
+            }
+            ViewData["categories"] = categoryNames;
+
+
+            var products = _context.Products.ToList();
+
+            
+
+            return View(products);
+
+
+
+
+
+
             //return _context.Movie != null ? 
             //            View(await _context.Movie.ToListAsync()) :
             //            Problem("Entity set 'ApplicationDbContext.Products'  is null.");
-            return View(products);
+
+        }
+
+        public async Task<IActionResult> Filter(string value, string? category)
+        {
+            var categoryNames = new List<string>();
+            var categories = await _context.ProductCategories.ToListAsync();
+            foreach (var cat in categories)
+            {
+                categoryNames.Add(cat.Name);
+            }
+            ViewData["categories"] = categoryNames;
+
+            if (value != "blank")
+            {
+                IQueryable<Product> products = _context.Products;
+                if (!String.IsNullOrEmpty(value))
+                {
+                    products = products.Where(t => t.ProductName.Contains(value));
+
+                }
+                return View(await products.ToListAsync());
+            }
+            else
+            {
+                var productCategory = _context.ProductCategories.FirstOrDefault(x => x.Name == category);
+                var prodCategoryName = productCategory.Name;
+
+                
+
+                if (String.IsNullOrEmpty(Request.Cookies["Suggestion"]))
+                {
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTime.Now.AddHours(1);
+                    options.Secure = true;
+                    Response.Cookies.Append("Suggestion", prodCategoryName, options);
+                }
+                else
+                {
+                    CookieOptions options = new CookieOptions();
+                    Response.Cookies.Append("Suggestion", prodCategoryName.ToString(), options);
+                }
+
+                var categoryProd = _context.ProductCategories.FirstOrDefault(x => x.Name == prodCategoryName);
+                var categId = categoryProd.ProductCategoryId;
+                
+
+
+                var products = _context.Products.Where(x=>x.CategoryId == categId);
+                return View(await products.ToListAsync());
+            }
         }
 
         // GET: Products/Details/5
@@ -232,7 +259,7 @@ namespace Shop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,ProductName,Description,MainImageFile,SecondImageFile,ThirdImageFile,Price,DiscountedPrice,InStock,CategoryId,EventId,SellerId")] Product product)
-        { 
+        {
             string wwwRootPath = _hostEnvironment.WebRootPath;
             string mainFile = Path.GetFileNameWithoutExtension(product.MainImageFile.FileName);
             string secondFile = Path.GetFileNameWithoutExtension(product.SecondImageFile.FileName);
@@ -264,12 +291,16 @@ namespace Shop.Controllers
             {
                 await product.ThirdImageFile.CopyToAsync(fileStream);
             }
+            if (ModelState.IsValid)
+            {
+                _context.Add(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
 
-            _context.Add(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
 
-            //return View(product);
+
+            return View(product);
         }
 
         // GET: Products/Edit/5

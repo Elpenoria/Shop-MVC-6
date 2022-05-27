@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Shop.Validatore;
+using Shop.Validators;
 namespace Shop.Models
 {
     public class Event

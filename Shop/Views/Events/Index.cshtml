@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+@if (User.IsInRole("Seller"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <div class="row mb-4 " >
     @foreach (var item in Model)
     {
@@ -27,78 +28,16 @@
             <p>@item.Description</p>
             <a class="btn btn-outline-warning" asp-action="Details" asp-route-id="@item.EventId">Go to special products <i class="fa-solid fa-angles-right"></i></a>
         </div>
+
+        @if (User.IsInRole("Seller"))
+        {
+            <p class="mx-auto">
+                <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-outline-primary">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-outline-primary">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-outline-primary">Delete</a>
+            </p>
+        }
     }
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EventName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventHeader)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Discount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SellerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventHeader)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Discount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SellerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+

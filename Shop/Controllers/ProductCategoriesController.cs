@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using Shop.Models;
 
 namespace Shop.Controllers
 {
+    
     public class ProductCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,8 +24,15 @@ namespace Shop.Controllers
         }
 
         // GET: ProductCategories
+        
         public async Task<IActionResult> Index()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+
+
+            HttpContext.Session.SetInt32("CartItems", userCart.Count());
+
             return _context.ProductCategories != null ?
                         View(await _context.ProductCategories.ToListAsync()) :
                         Problem("Entity set 'ApplicationDbContext.ProductCategories'  is null.");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,13 @@ using Shop.Models;
 
 namespace Shop.Controllers
 {
-
+    
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-
+        
         public EventsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
@@ -25,8 +26,15 @@ namespace Shop.Controllers
         }
 
         // GET: Events
+        [Authorize(Roles = "Seller , Admin ,User")]
         public async Task<IActionResult> Index()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userCart = _context.PendingCartItems.Where(x => x.UserId == userId).ToList();
+
+
+            HttpContext.Session.SetInt32("CartItems", userCart.Count());
+
             var events = _context.Events.ToList();
             foreach (var ev in events)
             {
@@ -85,6 +93,7 @@ namespace Shop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Seller ")]
         public async Task<IActionResult> Create([Bind("EventId,EventName,EventHeader,Description,Discount,ImageUrlFile,StartDate,EndDate,SellerId,CategoryId")] Event @event)
         {
             string wwwRootPath = _hostEnvironment.WebRootPath;
@@ -101,7 +110,7 @@ namespace Shop.Controllers
                 await @event.ImageUrlFile.CopyToAsync(fileStream);
             }
             _context.Add(@event);
-            await _context.SaveChangesAsync();
+            
 
 
             var events = _context.Events.ToList();
@@ -121,12 +130,16 @@ namespace Shop.Controllers
                 }
 
             }
+            if (ModelState.IsValid) {
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(@event);
             
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
         }
 
         // GET: Events/Edit/5
+        [Authorize(Roles = "Seller , Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Events == null)
@@ -147,6 +160,7 @@ namespace Shop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Seller , Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("EventId,EventName,EventHeader,Description,Discount,ImageUrl,StartDate,EndDate,SellerId,CategoryId")] Event @event)
         {
             if (id != @event.EventId)
@@ -178,6 +192,7 @@ namespace Shop.Controllers
         }
 
         // GET: Events/Delete/5
+        [Authorize(Roles = "Seller , Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Events == null)
@@ -198,6 +213,7 @@ namespace Shop.Controllers
         // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Seller , Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Events == null)

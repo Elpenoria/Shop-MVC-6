@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Shop.Models;
 
 namespace Shop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class Admin1Controller : Controller
     {
         private readonly UserManager<ApplicationUser> UserManager;
